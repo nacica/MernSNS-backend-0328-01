@@ -1,6 +1,21 @@
 const router = require("express").Router();
 const User = require("../models/User");
-// // const bcrypt = require("bcrypt");
+
+
+
+
+// 遠藤のデータを取得・・これでデータが出てこないのはなぜ
+router.get("/endou", async (req, res) => {
+  const endou = await User.find({ });
+  console.log(endou);
+  return res.send("endou");
+  // return res.status(200).json(endou);
+})
+
+
+
+
+
 
 // //ユーザー登録
 router.post("/register", async (req, res) => {
@@ -9,7 +24,7 @@ router.post("/register", async (req, res) => {
 //     // const salt = await bcrypt.genSalt(10);
 //     // const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
-//     //create user
+   //create user
     const newUser = await new User({
       username: req.body.username,
       email: req.body.email,
