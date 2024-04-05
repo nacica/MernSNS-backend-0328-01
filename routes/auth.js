@@ -14,11 +14,6 @@ router.get("/endou", async (req, res) => {
   // return res.status(200).json(endou);
 })
 
-
-
-
-
-
 // //ユーザー登録
 router.post("/register", async (req, res) => {
 //   try {
