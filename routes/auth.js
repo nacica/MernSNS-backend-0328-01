@@ -7,10 +7,10 @@ const User = require("../models/User");
 // 遠藤のデータを取得・・これでデータが出てこないのはなぜ
 router.get("/endou", async (req, res) => {
   console.log("endouのこんそーる");
-  const endou = await User.find({username: 遠藤航 });
+  const endou = await User.find({username: "遠藤航" });
   console.log(endou);
   console.log("endouのこんそーる");
-  return res.send("endou");
+  return res.send(endou);
   // return res.status(200).json(endou);
 })
 
