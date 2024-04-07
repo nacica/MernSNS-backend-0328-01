@@ -1,5 +1,5 @@
 const express = require("express");
-// const cors = require('cors');
+const cors = require('cors');
 const app = express();
 const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
@@ -17,11 +17,12 @@ const postRoute = require("./routes/posts");
 const PORT = 5000;
 
 // CORSの設定
-// app.use(cors({
-//     origin: 'https://mernsns-front-second.onrender.com', // フロントエンドのオリジンを許可
-//     origin: 'http://localhost:3001/',
-//     credentials: true, // クッキーや認証情報も扱う場合
-// }));
+app.use(cors({
+    origin: 'https://mernsns-front-second.onrender.com', // フロントエンドのオリジンを許可
+    origin: 'http://localhost:3001/',
+    origin: 'http://localhost:3000/',
+    credentials: true, // クッキーや認証情報も扱う場合
+}));
 
 // CORS設定
 app.use(function(req, res, next) {
