@@ -1,4 +1,5 @@
 const express = require("express");
+// const cors = require('cors');
 const app = express();
 const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
@@ -14,6 +15,22 @@ const postRoute = require("./routes/posts");
 // const path = require("path");
 
 const PORT = 5000;
+
+// CORSの設定
+// app.use(cors({
+//     origin: 'https://mernsns-front-second.onrender.com', // フロントエンドのオリジンを許可
+//     origin: 'http://localhost:3001/',
+//     credentials: true, // クッキーや認証情報も扱う場合
+// }));
+
+// CORS設定
+app.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+  });
+
+
 
 
 mongoose.connect(process.env.REACT_APP_MONGO_URL).then(() => {
