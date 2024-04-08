@@ -4,7 +4,7 @@ const User = require("../models/User");
 
 
 // ユーザー情報の更新
-router.put("/:id", async (req, res) => {
+router.put("https://mernsns-backend-0404-01.onrender.com/api/users/:id", async (req, res) => {
   if (req.body.userId === req.params.id || req.body.isAdmin) {
     if (req.body.password) {
       try {
@@ -29,7 +29,7 @@ router.put("/:id", async (req, res) => {
 });
 
 //ユーザー削除
-router.delete("/:id", async (req, res) => {
+router.delete("https://mernsns-backend-0404-01.onrender.com/api/users/:id", async (req, res) => {
   if (req.body.userId === req.params.id || req.body.isAdmin) {
     try {
       const user = await User.findByIdAndDelete(req.params.id);
@@ -44,7 +44,7 @@ router.delete("/:id", async (req, res) => {
 });
 
 //ユーザー情報の取得
-router.get("/:id", async (req, res) => {
+router.get("https://mernsns-backend-0404-01.onrender.com/api/users/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     const { passward, updateAt, ...other } = user._doc;
@@ -55,7 +55,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // //クエリでuser情報を取得
-router.get("/", async (req, res) => {
+router.get("https://mernsns-backend-0404-01.onrender.com/api/users/", async (req, res) => {
   const userId = req.query.userId;
   const username = req.query.username;
   try {
@@ -70,15 +70,17 @@ router.get("/", async (req, res) => {
 });
 
 //フォロー
-router.put("/:id/follow", async (req, res) => {
+router.put("https://mernsns-backend-0404-01.onrender.com/api/users/:id/follow", async (req, res) => {
   if (req.body.userId !== req.params.id) {
     try {
       const user = await User.findById(req.params.id);
       const currentUser = await User.findById(req.body.userId);
       //フォロワーにいなかったらフォローできる
       if (!user.followers.includes(req.body.userId)) {
-        await user.updateOne({ $push: { followers: req.body.userId } });
-        await currentUser.updateOne({ $push: { followings: req.params.id } });
+        await user.updateOne({ 
+          $push: { followers: req.body.userId } });
+        await currentUser.updateOne({ 
+          $push: { followings: req.params.id } });
         res.status(200).json("フォローしました");
       } else {
         return res.status(403).json("既にフォロー済みです");
@@ -92,7 +94,7 @@ router.put("/:id/follow", async (req, res) => {
 });
 
 //unfollow a user
-router.put("/:id/unfollow", async (req, res) => {
+router.put("https://mernsns-backend-0404-01.onrender.com/api/users/:id/unfollow", async (req, res) => {
   if (req.body.userId !== req.params.id) {
     try {
       const user = await User.findById(req.params.id);
