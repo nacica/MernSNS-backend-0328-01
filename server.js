@@ -18,17 +18,9 @@ const PORT = 5000;
 
 app.use(cors());
 
-
-
-
-
-
 mongoose.connect(process.env.REACT_APP_MONGO_URL).then(() => {
   console.log("MongoDB 繋がったよ");
 });
-
-
-
 
 //ミドルウェア(jsonのみを解析)
     // app.use("/images", express.static(path.join(__dirname, "public/images")));

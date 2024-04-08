@@ -1,36 +1,34 @@
 const router = require("express").Router();
 const User = require("../models/User");
 
-// router.get("/", (req, res) => {
-//   res.send("user router");
-// });
 
-//update user
+
+// ユーザー情報の更新
 router.put("/:id", async (req, res) => {
   if (req.body.userId === req.params.id || req.body.isAdmin) {
-    // if (req.body.password) {
-    //   try {
-    //     req.body.password = req.body.password;
-    //   } catch (err) {
-    //     return res.status(500).json(err);
-    //   }
-    // }
+    if (req.body.password) {
+      try {
+        req.body.password = req.body.password;
+      } catch (err) {
+        return res.status(500).json(err);
+      }
+    }
 
     try {
       const user = await User.findByIdAndUpdate(req.params.id, {
         $set: req.body,
       });
-      res.status(200).json("account has been updated");
+      res.status(200).json("ユーザー情報の更新が完了しました");
     } catch (err) {
       console.log(err);
       return res.status(500).json(err);
     }
   } else {
-    return res.status(403).json("you can update only your account");
+    return res.status(403).json("自分のアカウントしか更新できません");
   }
 });
 
-//delete user
+//ユーザー削除
 router.delete("/:id", async (req, res) => {
   if (req.body.userId === req.params.id || req.body.isAdmin) {
     try {
@@ -45,18 +43,18 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-// get a user
+//ユーザー情報の取得
 router.get("/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     const { passward, updateAt, ...other } = user._doc;
-    res.status(200).json(other);
+    return res.status(200).json(other);
   } catch (err) {
-    res.status(500).json(err);
+    return res.status(500).json(err);
   }
 });
 
-//クエリでuser情報を取得
+// //クエリでuser情報を取得
 router.get("/", async (req, res) => {
   const userId = req.query.userId;
   const username = req.query.username;
@@ -71,7 +69,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-//follow a user
+//フォロー
 router.put("/:id/follow", async (req, res) => {
   if (req.body.userId !== req.params.id) {
     try {
@@ -79,17 +77,19 @@ router.put("/:id/follow", async (req, res) => {
       const currentUser = await User.findById(req.body.userId);
       //フォロワーにいなかったらフォローできる
       if (!user.followers.includes(req.body.userId)) {
-        await user.updateOne({ $push: { followers: req.body.userId } });
-        await currentUser.updateOne({ $push: { followings: req.params.id } });
-        res.status(200).json("user has been followd");
+        await user.findByIdAndUpdate({ 
+          $push: { followers: req.body.userId } });
+        await currentUser.findByIdAndUpdate({ 
+          $push: { followings: req.params.id } });
+        res.status(200).json("フォローしました");
       } else {
-        return res.status(403).json("you allready follow this user");
+        return res.status(403).json("既にフォロー済みです");
       }
     } catch (err) {
       return res.status(500).json(err);
     }
   } else {
-    return res.status(500).json("cant follow yourself");
+    return res.status(500).json("自分自身をフォローすることはできません");
   }
 });
 
@@ -101,17 +101,19 @@ router.put("/:id/unfollow", async (req, res) => {
       const currentUser = await User.findById(req.body.userId);
       //フォロワーにいたらフォロー外せる
       if (user.followers.includes(req.body.userId)) {
-        await user.updateOne({ $pull: { followers: req.body.userId } });
-        await currentUser.updateOne({ $pull: { followings: req.params.id } });
-        res.status(200).json("user has been unfollowd");
+        await user.updateOne({ 
+          $pull: { followers: req.body.userId } });
+        await currentUser.updateOne({ 
+          $pull: { followings: req.params.id } });
+        res.status(200).json("アンフォローに成功しました");
       } else {
-        return res.status(403).json("you dont follow this user");
+        return res.status(403).json("このユーザーをフォローしていません");
       }
     } catch (err) {
       return res.status(500).json(err);
     }
   } else {
-    return res.status(500).json("cant unfollow yourself");
+    return res.status(500).json("自分自身をフォローできません");
   }
 });
 
