@@ -4,10 +4,10 @@ const app = express();
 const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
 const helmet = require("helmet");
-// const morgan = require("morgan");
 const userRoute = require("./routes/users");
 const authRoute = require("./routes/auth");
 const postRoute = require("./routes/posts");
+// const morgan = require("morgan");
 // const uploadRoute = require("./routes/upload");
 // const bodyParser = require("body-parser");
 // const multer = require("multer");
@@ -18,20 +18,7 @@ const PORT = 5000;
 
 app.use(cors());
 
-// CORSの設定
-// app.use(cors({
-//     origin: 'https://mernsns-front-second.onrender.com', // フロントエンドのオリジンを許可
-//     origin: 'http://localhost:3001/',
-//     origin: 'http://localhost:3000/',
-//     credentials: true, // クッキーや認証情報も扱う場合
-// }));
 
-// CORS設定
-// app.use(function(req, res, next) {
-//     res.header('Access-Control-Allow-Origin', '*');
-//     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-//     next();
-//   });
 
 
 
