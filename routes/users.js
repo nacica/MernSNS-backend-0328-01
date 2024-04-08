@@ -55,7 +55,8 @@ router.get("/:id", async (req, res) => {
 });
 
 // //クエリでuser情報を取得
-router.get("/", async (req, res) => {
+// router.get("/", async (req, res) => {
+router.get("https://mernsns-backend-0404-01.onrender.com/api/users", async (req, res) => {
   const userId = req.query.userId;
   const username = req.query.username;
   try {
