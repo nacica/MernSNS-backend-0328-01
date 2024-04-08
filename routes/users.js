@@ -59,6 +59,8 @@ router.get("/:id", async (req, res) => {
 router.get("https://mernsns-backend-0404-01.onrender.com/api/users", async (req, res) => {
   const userId = req.query.userId;
   const username = req.query.username;
+  console.log("クエリのusername取れてるか見る")
+  console.log(username)
   try {
     const user = userId
       ? await User.findById(userId)
