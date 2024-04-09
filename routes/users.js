@@ -44,23 +44,40 @@ router.delete("/:id", async (req, res) => {
 });
 
 //ユーザー情報の取得
-router.get("/:id", async (req, res) => {
+// router.get("/:id", async (req, res) => {
+//   try {
+//     const user = await User.findById(req.params.id);
+//     const { passward, updateAt, ...other } = user._doc;
+//     return res.status(200).json(other);
+//   } catch (err) {
+//     return res.status(500).json(err);
+//   }
+// });
+
+//ユーザー情報の取得
+router.get("/:username", async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findOne({username: req.params.username});
     const { passward, updateAt, ...other } = user._doc;
-    return res.status(200).json(other);
+    return res.status(200).json(user);
   } catch (err) {
     return res.status(500).json(err);
   }
 });
+
+
+
+
+
+
+
 
 // //クエリでuser情報を取得
 // router.get("/", async (req, res) => {
 router.get("https://mernsns-backend-0404-01.onrender.com/api/users", async (req, res) => {
   const userId = req.query.userId;
   const username = req.query.username;
-  console.log("クエリのusername取れてるか見る")
-  console.log(username)
+
   try {
     const user = userId
       ? await User.findById(userId)
