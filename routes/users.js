@@ -84,8 +84,8 @@ router.get("https://mernsns-backend-0404-01.onrender.com/api/users", async (req,
 });
 
 //フォロー
-// router.put("https://mernsns-backend-0404-01.onrender.com/api/users/:id/follow", async (req, res) => {
-router.put("/:id/follow", async (req, res) => {
+router.put("https://mernsns-backend-0404-01.onrender.com/api/users/:id/follow", async (req, res) => {
+// router.put("/:id/follow", async (req, res) => {
   if (req.body.userId !== req.params.id) {
     try {
       const user = await User.findById(req.params.id);
@@ -111,7 +111,8 @@ router.put("/:id/follow", async (req, res) => {
 });
 
 //unfollow a user
-router.put("/:id/unfollow", async (req, res) => {
+// router.put("/:id/unfollow", async (req, res) => {
+router.put("/:id/follow", async (req, res) => {
   if (req.body.userId !== req.params.id) {
     try {
       const user = await User.findById(req.params.id);
