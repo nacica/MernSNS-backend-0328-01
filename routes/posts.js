@@ -1,6 +1,10 @@
 const router = require("express").Router();
 const Post = require("../models/Post");
 const User = require("../models/User");
+const cors = require('cors');
+
+app.use(cors());
+
 
 //投稿を作成する
 router.post("/", async (req, res) => {
