@@ -84,73 +84,32 @@ router.get("https://mernsns-backend-0404-01.onrender.com/api/users", async (req,
 });
 
 
-
-
-
-
-router.put("/api/users/:id/follow", async (req, res) => {
-  try {
-    // リクエストのバリデーション
-    if (!req.body.userId || !req.params.id) {
-      return res.status(400).json({ error: "不正なリクエストです" });
+//フォロー
+router.put("/:id/follow", async (req, res) => {
+// router.put("/:id/follow", async (req, res) => {
+  if (req.body.userId !== req.params.id) {
+    try {
+      const user = await User.findById(req.params.id);
+      const currentUser = await User.findById(req.body.userId);
+      //フォロワーにいなかったらフォローできる
+      if (!user.followers.includes(req.body.userId)) {
+        await user.updateOne({ 
+          $push: {
+             followers: req.body.userId } });
+        await currentUser.updateOne({ 
+          $push: {
+             followings: req.params.id } });
+        res.status(200).json("フォローできたよ");
+      } else {
+        return res.status(403).json("既にフォローしてるよ");
+      }
+    } catch (err) {
+      return res.status(500).json(err);
     }
-
-    // ユーザーの存在確認
-    const user = await User.findById(req.params.id);
-    const currentUser = await User.findById(req.body.userId);
-    if (!user || !currentUser) {
-      return res.status(404).json({ error: "ユーザーが見つかりません" });
-    }
-
-    // フォローの重複チェック
-    if (user.followers.includes(req.body.userId)) {
-      return res.status(403).json({ error: "既にフォローしています" });
-    }
-
-    // フォローを実行
-    await user.updateOne({ $push: { followers: req.body.userId } });
-    await currentUser.updateOne({ $push: { followings: req.params.id } });
-    return res.status(200).json("フォローできたよ");
-  } catch (err) {
-    // エラーハンドリング
-    console.error(err);
-    return res.status(500).json({ error: "サーバーエラーが発生しました" });
+  } else {
+    return res.status(500).json("自分はフォローできないよ");
   }
 });
-
-
-
-
-
-
-
-
-// //フォロー
-// router.put("https://mernsns-backend-0404-01.onrender.com/api/users/:id/follow", async (req, res) => {
-// // router.put("/:id/follow", async (req, res) => {
-//   if (req.body.userId !== req.params.id) {
-//     try {
-//       const user = await User.findById(req.params.id);
-//       const currentUser = await User.findById(req.body.userId);
-//       //フォロワーにいなかったらフォローできる
-//       if (!user.followers.includes(req.body.userId)) {
-//         await user.updateOne({ 
-//           $push: {
-//              followers: req.body.userId } });
-//         await currentUser.updateOne({ 
-//           $push: {
-//              followings: req.params.id } });
-//         res.status(200).json("フォローできたよ");
-//       } else {
-//         return res.status(403).json("既にフォローしてるよ");
-//       }
-//     } catch (err) {
-//       return res.status(500).json(err);
-//     }
-//   } else {
-//     return res.status(500).json("自分はフォローできないよ");
-//   }
-// });
 
 //unfollow a user
 // router.put("/:id/unfollow", async (req, res) => {
