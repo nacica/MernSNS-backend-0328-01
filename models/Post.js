@@ -8,7 +8,7 @@ const PostSchema = new mongoose.Schema(
     },
     username: {
       type: String,
-      max: 50,
+      max: 10,
     },
     desc: {
       type: String,
