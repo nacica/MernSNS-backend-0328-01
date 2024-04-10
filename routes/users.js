@@ -84,16 +84,20 @@ router.get("https://mernsns-backend-0404-01.onrender.com/api/users", async (req,
 });
 
 //フォロー
-router.put("https://mernsns-backend-0404-01.onrender.com/api/users/:id/follow", async (req, res) => {
-// router.put("/:id/follow", async (req, res) => {
+// router.put("https://mernsns-backend-0404-01.onrender.com/api/users/:id/follow", async (req, res) => {
+router.put("/:id/follow", async (req, res) => {
   if (req.body.userId !== req.params.id) {
     try {
       const user = await User.findById(req.params.id);
       const currentUser = await User.findById(req.body.userId);
       //フォロワーにいなかったらフォローできる
       if (!user.followers.includes(req.body.userId)) {
-        await user.updateOne({ $push: { followers: req.body.userId } });
-        await currentUser.updateOne({ $push: { followings: req.params.id } });
+        await user.updateOne({ 
+          $push: {
+             followers: req.body.userId } });
+        await currentUser.updateOne({ 
+          $push: {
+             followings: req.params.id } });
         res.status(200).json("フォローできたよ");
       } else {
         return res.status(403).json("既にフォローしてるよ");
