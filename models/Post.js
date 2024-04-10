@@ -10,6 +10,9 @@ const PostSchema = new mongoose.Schema(
       type: String,
       max: 10,
     },
+    profileIcon:{
+      type: String,
+    },
     desc: {
       type: String,
       max: 500,
